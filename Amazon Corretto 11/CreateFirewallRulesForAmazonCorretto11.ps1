@@ -6,7 +6,7 @@
 #Requires -Version 5.1
 #Requires -RunAsAdministrator
 
-# Get Amazon Corretto 11 paths from Program Files for 64-bit installations
+# Get Amazon Corretto 11 paths from Program Files for 64-bit installations and Program Files (x86) for 32-bit installations
 $ProgramFilesAmazonCorretto = Get-ChildItem -Path "$env:ProgramFiles\Amazon Corretto","${env:ProgramFiles(x86)}\Amazon Corretto" -Directory -ErrorAction SilentlyContinue | Where-Object {$_.Name -like "jdk11.*"}
 # Check that at least one Amazon Corretto 11 installation exists
 If (-not $ProgramFilesAmazonCorretto) {
