@@ -7,7 +7,7 @@
 #Requires -RunAsAdministrator
 
 # Get Amazon Corretto 11 paths from Program Files for 64-bit installations
-$ProgramFilesAmazonCorretto = Get-ChildItem -Path "$env:ProgramFiles\Amazon Corretto" -Directory -ErrorAction SilentlyContinue | Where-Object {$_.Name -like "jdk11.*"}
+$ProgramFilesAmazonCorretto = Get-ChildItem -Path "$env:ProgramFiles\Amazon Corretto","${env:ProgramFiles(x86)}\Amazon Corretto" -Directory -ErrorAction SilentlyContinue | Where-Object {$_.Name -like "jdk11.*"}
 # Check that at least one Amazon Corretto 11 installation exists
 If (-not $ProgramFilesAmazonCorretto) {
     Write-Verbose -Message "No Amazon Corretto 11 installations found in Program Files so this script will exit."
@@ -30,7 +30,7 @@ Get-NetFirewallRule | Where-Object {$_.DisplayName -like "OpenJDK Platform Binar
 # Create new firewall rules for each current Amazon Corretto 11 installation
 $ProgramFilesAmazonCorrettoResolvedPaths | Foreach-Object {
     # Dynamically set the rule name to use the version of java.exe
-    $RuleName = "OpenJDK Platform Binary (Amazon Corretto 11 JDK $($_.VersionInfo.FileVersion))"
+    $RuleName = "OpenJDK Platform Binary for Amazon Corretto $($_.VersionInfo.FileVersion)"
     # Check if the rule already exists
     If (-not (Get-NetFirewallRule -DisplayName $RuleName -ErrorAction SilentlyContinue)) {
         # Create the firewall rule for the Amazon Corretto 11
