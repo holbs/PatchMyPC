@@ -10,7 +10,7 @@
 $ProgramFilesAmazonCorretto = Get-ChildItem -Path "$env:ProgramFiles\Amazon Corretto","${env:ProgramFiles(x86)}\Amazon Corretto" -Directory -ErrorAction SilentlyContinue | Where-Object {$_.Name -like "jdk11.*"}
 # Check that at least one Amazon Corretto 11 installation exists
 If (-not $ProgramFilesAmazonCorretto) {
-    Write-Verbose -Message "No Amazon Corretto 11 installations found in Program Files so this script will exit."
+    Write-Verbose -Message "No Amazon Corretto 11 installations found in Program Files or Program Files (x86) so this script will exit."
     Exit
 }
 # Resolve any paths to the Java executable for Amazon Corretto 11
