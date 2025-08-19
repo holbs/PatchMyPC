@@ -30,7 +30,9 @@ Get-NetFirewallRule | Where-Object {$_.DisplayName -like "OpenJDK Platform Binar
 # Create new firewall rules for each current Amazon Corretto 11 installation
 $ProgramFilesAmazonCorrettoResolvedPaths | Foreach-Object {
     # Dynamically set the rule name to use the version of java.exe
-    $RuleName = "OpenJDK Platform Binary for Amazon Corretto $($_.VersionInfo.FileVersion)"
+    $Arch = If ($_.Directory -like "${env:ProgramFiles(x86)}*") {"x86"} Else {"x64"}
+    $Version = $_.VersionInfo.FileVersion
+    $RuleName = "OpenJDK Platform Binary for Amazon Corretto $Arch $Version"
     # Check if the rule already exists
     If (-not (Get-NetFirewallRule -DisplayName $RuleName -ErrorAction SilentlyContinue)) {
         # Create the firewall rule for the Amazon Corretto 11
